@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% set page_title = "gpcML Extractor" %}
+{% set app_title = "gpcML Extractor" %}
+{% set app_subtitle = "Extract structured data from one or more gpcML XML documents." %}
+{% set active_page = "extractor" %}
+
+{% block page_content %}
+  <section class="card">
+    <h2 class="h2">Upload XML</h2>
+    <p class="muted">Upload your XML files here to generate a quick tabular extract of the data in each file.</p>
+
+    <form class="form" action="/extract" method="post" enctype="multipart/form-data">
+      <div class="field">
+        <label class="label" for="xml_files">XML files</label>
+
+        <div class="filebox">
+          <input id="xml_files" class="fileinput" type="file" name="xml_files" multiple
+                 accept=".xml,.txt,application/xml,text/xml" required>
+          <div class="filehint">
+            <div class="filehint-title">Drop your XML files here or click to browse</div>
+            <div class="filehint-sub">Accepted file types: .xml</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" type="submit">Extract</button>
+      </div>
+    </form>
+  </section>
+
+  {% if errors and errors|length > 0 %}
+    <section class="card result error section-gap">
+      <div class="result-header">
+        <div class="badge error">Some files failed</div>
+        <h2>Parsing errors</h2>
+      </div>
+      <pre class="result-body">{{ errors|join('\n') }}</pre>
+    </section>
+  {% endif %}
+
+  {% if tables %}
+    <section class="card section-gap">
+      <h2 class="h2">Contacts</h2>
+      <div class="tablewrap">{{ tables.contacts | safe }}</div>
+    </section>
+
+    <section class="card section-gap">
+      <h2 class="h2">Columns</h2>
+      <div class="tablewrap">{{ tables.columns | safe }}</div>
+    </section>
+
+    <section class="card section-gap">
+      <h2 class="h2">Eluent</h2>
+      <div class="tablewrap">{{ tables.eluent | safe }}</div>
+    </section>
+  {% endif %}
+{% endblock %}
+
+{% block page_scripts %}
+  <script>
+    const input = document.getElementById("xml_files");
+    const hintTitle = document.querySelector(".filehint-title");
+    if (input && hintTitle) {
+      input.addEventListener("change", () => {
+        if (input.files && input.files.length > 0) {
+          hintTitle.textContent = `Selected ${input.files.length} file(s)`;
+        } else {
+          hintTitle.textContent = "Drop your XML files here or click to browse";
+        }
+      });
+    }
+  </script>
+{% endblock %}
