@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ page_title }}</title>
+  <link rel="stylesheet" href="{{ request.url_for('static', path='style.css') }}">
+  <script>
+    (function () {
+      const key = "gpcml-theme";
+      const saved = localStorage.getItem(key);
+      if (saved && saved !== "current") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+  {% block head_extra %}{% endblock %}
+</head>
+<body>
+  <div class="bg"></div>
+
+  <main class="page">
+    {% include "_page_chrome.html" %}
+    {% block page_content %}{% endblock %}
+
+    <footer class="footer">
+      <span class="muted"></span>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      const key = "gpcml-theme";
+      const root = document.documentElement;
+      const select = document.getElementById("themeSelect");
+      if (!select) return;
+
+      const current = root.getAttribute("data-theme") || "current";
+      select.value = localStorage.getItem(key) || current;
+
+      if (select.value && select.value !== "current") {
+        root.setAttribute("data-theme", select.value);
+      } else {
+        root.removeAttribute("data-theme");
+      }
+
+      select.addEventListener("change", () => {
+        const val = select.value;
+        if (val === "current") root.removeAttribute("data-theme");
+        else root.setAttribute("data-theme", val);
+        localStorage.setItem(key, val);
+      });
+    })();
+  </script>
+  {% block page_scripts %}{% endblock %}
+</body>
+</html>

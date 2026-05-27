@@ -1,0 +1,66 @@
+{% set path = request.url.path %}
+<details class="topdrawer" id="topdrawer">
+  <summary class="topdrawer-summary">
+    <span class="topdrawer-title">Menu</span>
+    <span class="topdrawer-hint muted"></span>
+  </summary>
+
+  <div class="topdrawer-body">
+    <div class="topdrawer-stack">
+      <details class="subdrawer" id="toolsDrawer">
+        <summary class="subdrawer-summary">
+          <span class="subdrawer-title">Tools</span>
+          <span class="subdrawer-hint muted"></span>
+        </summary>
+
+        <div class="subdrawer-body">
+          <a class="subdrawer-link {% if active_page == 'validator' %}active{% endif %}" href="/">Validator</a>
+          <a class="subdrawer-link {% if active_page == 'extractor' %}active{% endif %}" href="/extract">Extractor</a>
+          <a class="subdrawer-link {% if active_page == 'plotter' %}active{% endif %}" href="/rawplot">Plotter</a>
+        </div>
+      </details>
+
+      <details class="subdrawer" id="infoDrawer">
+        <summary class="subdrawer-summary">
+          <span class="subdrawer-title">Information</span>
+          <span class="subdrawer-hint muted"></span>
+        </summary>
+
+        <div class="subdrawer-body">
+          <a class="subdrawer-link {% if path == '/information' %}active{% endif %}" href="/information">Useful information</a>
+          <a class="subdrawer-link" href="/changelog">Changelog</a>
+          <a class="subdrawer-link" href="/contact">Contact us</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</details>
+
+<header class="header">
+  <div class="headerbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">g</div>
+      <div>
+        <h1>{{ app_title }}</h1>
+        <p class="subtitle">{{ app_subtitle }}</p>
+      </div>
+    </div>
+
+    <div class="theme">
+      <label class="theme-label" for="themeSelect">Theme</label>
+      <select id="themeSelect" class="dropdown">
+        <option value="current">Green &amp; Blue</option>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="orange">Orange &amp; White</option>
+      </select>
+    </div>
+  </div>
+
+  <nav class="tabs" aria-label="Primary">
+    <a class="tab {% if active_page == 'validator' %}active{% endif %}" href="/">Validator</a>
+    <a class="tab {% if active_page == 'extractor' %}active{% endif %}" href="/extract">Extractor</a>
+    <a class="tab {% if active_page == 'plotter' %}active{% endif %}" href="/rawplot">Plotter</a>
+    <a class="tab {% if active_page == 'information' %}active{% endif %}" href="/information">Information</a>
+  </nav>
+</header>
